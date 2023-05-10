@@ -1,0 +1,3 @@
+{
+  "python.analysis.extraPaths": ["./param", "./rules"]
+}

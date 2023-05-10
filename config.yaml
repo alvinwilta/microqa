@@ -1,0 +1,27 @@
+name: robot-shop
+repo_name: robotshop
+root_dir: ../robot-shop/
+service_connection_type: file # file/api
+service_connection_param: ./net_graph.json # file=filename, api=url api
+services:
+  cart:
+    dir: cart/
+    lang: js
+  catalog:
+    dir: catalogue/
+    lang: js
+  dispatch:
+    dir: dispatch/
+    lang: go
+  payment:
+    dir: payment/
+    lang: py
+  ratings:
+    dir: ratings/html/
+    lang: php
+  shipping:
+    dir: shipping/src/main/java/com/instana/robotshop/shipping/
+    lang: java
+  user:
+    dir: user/
+    lang: js

@@ -1,0 +1,967 @@
+{
+  "nodes": {
+    "robotshop/rs-dispatch;<container_image>": {
+      "id": "robotshop/rs-dispatch;<container_image>",
+      "label": "robotshop/rs-dispatch",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-dispatch",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ],
+      "adjacency": ["rabbitmq;<container_image>"]
+    },
+    "redis;<container_image>": {
+      "id": "redis;<container_image>",
+      "label": "redis",
+      "labelMinor": "1 container",
+      "rank": "redis",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "robotshop/rs-mongodb;<container_image>": {
+      "id": "robotshop/rs-mongodb;<container_image>",
+      "label": "robotshop/rs-mongodb",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-mongodb",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "traefik;<container_image>": {
+      "id": "traefik;<container_image>",
+      "label": "traefik",
+      "labelMinor": "1 container",
+      "rank": "traefik",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": [
+            {
+              "id": "label_org.opencontainers.image.description",
+              "entries": {
+                "value": "A modern reverse-proxy",
+                "label": "org.opencontainers.image.description"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.documentation",
+              "entries": {
+                "label": "org.opencontainers.image.documentation",
+                "value": "https://docs.traefik.io"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.title",
+              "entries": {
+                "label": "org.opencontainers.image.title",
+                "value": "Traefik"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.url",
+              "entries": {
+                "label": "org.opencontainers.image.url",
+                "value": "https://traefik.io"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.vendor",
+              "entries": {
+                "label": "org.opencontainers.image.vendor",
+                "value": "Traefik Labs"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.version",
+              "entries": {
+                "label": "org.opencontainers.image.version",
+                "value": "v2.8.7"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "robotshop/rs-web;<container_image>": {
+      "id": "robotshop/rs-web;<container_image>",
+      "label": "robotshop/rs-web",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-web",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": [
+            {
+              "id": "label_maintainer",
+              "entries": {
+                "label": "maintainer",
+                "value": "NGINX Docker Maintainers <docker-maint@nginx.com>"
+              }
+            }
+          ]
+        }
+      ],
+      "adjacency": [
+        "robotshop/rs-cart;<container_image>",
+        "robotshop/rs-catalogue;<container_image>",
+        "robotshop/rs-ratings;<container_image>",
+        "robotshop/rs-user;<container_image>"
+      ]
+    },
+    "out-theinternet": {
+      "id": "out-theinternet",
+      "label": "The Internet",
+      "labelMinor": "Outbound connections",
+      "rank": "out-theinternet",
+      "shape": "cloud",
+      "pseudo": true
+    },
+    "wurstmeister/kafka;<container_image>": {
+      "id": "wurstmeister/kafka;<container_image>",
+      "label": "wurstmeister/kafka",
+      "labelMinor": "1 container",
+      "rank": "wurstmeister/kafka",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": [
+            {
+              "id": "label_maintainer",
+              "entries": {
+                "label": "maintainer",
+                "value": "wurstmeister"
+              }
+            },
+            {
+              "id": "label_org.label-schema.build-date",
+              "entries": {
+                "value": "2021-12-30T09:16:54Z",
+                "label": "org.label-schema.build-date"
+              }
+            },
+            {
+              "id": "label_org.label-schema.description",
+              "entries": {
+                "label": "org.label-schema.description",
+                "value": "Apache Kafka"
+              }
+            },
+            {
+              "id": "label_org.label-schema.name",
+              "entries": {
+                "label": "org.label-schema.name",
+                "value": "kafka"
+              }
+            },
+            {
+              "id": "label_org.label-schema.schema-version",
+              "entries": {
+                "label": "org.label-schema.schema-version",
+                "value": "1.0"
+              }
+            },
+            {
+              "id": "label_org.label-schema.vcs-ref",
+              "entries": {
+                "label": "org.label-schema.vcs-ref",
+                "value": "c4e8f17fc9bbfe713b31bd9969babbb59523147b"
+              }
+            },
+            {
+              "id": "label_org.label-schema.vcs-url",
+              "entries": {
+                "label": "org.label-schema.vcs-url",
+                "value": "https://github.com/wurstmeister/kafka-docker"
+              }
+            },
+            {
+              "id": "label_org.label-schema.version",
+              "entries": {
+                "label": "org.label-schema.version",
+                "value": "2.11_1.1.1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "gitlab-runner/gitlab-runner-helper;<container_image>": {
+      "id": "gitlab-runner/gitlab-runner-helper;<container_image>",
+      "label": "gitlab-runner/gitlab-runner-helper",
+      "labelMinor": "3 containers",
+      "rank": "gitlab-runner/gitlab-runner-helper",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "3",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "robotshop/rs-cart;<container_image>": {
+      "id": "robotshop/rs-cart;<container_image>",
+      "label": "robotshop/rs-cart",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-cart",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ],
+      "adjacency": [
+        "redis;<container_image>",
+        "robotshop/rs-catalogue;<container_image>"
+      ]
+    },
+    "robotshop/rs-load;<container_image>": {
+      "id": "robotshop/rs-load;<container_image>",
+      "label": "robotshop/rs-load",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-load",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ],
+      "adjacency": ["robotshop/rs-web;<container_image>"]
+    },
+    "rabbitmq;<container_image>": {
+      "id": "rabbitmq;<container_image>",
+      "label": "rabbitmq",
+      "labelMinor": "1 container",
+      "rank": "rabbitmq",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": [
+            {
+              "id": "label_org.opencontainers.image.ref.name",
+              "entries": {
+                "label": "org.opencontainers.image.ref.name",
+                "value": "ubuntu"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.version",
+              "entries": {
+                "label": "org.opencontainers.image.version",
+                "value": "20.04"
+              }
+            }
+          ]
+        }
+      ],
+      "adjacency": ["rabbitmq;<container_image>"]
+    },
+    "service-content-autofill.googleapis.com": {
+      "id": "service-content-autofill.googleapis.com",
+      "label": "content-autofill.googleapis.com",
+      "labelMinor": "",
+      "rank": "service-content-autofill.googleapis.com",
+      "shape": "cloud",
+      "pseudo": true
+    },
+    "service-identitytoolkit.googleapis.com": {
+      "id": "service-identitytoolkit.googleapis.com",
+      "label": "identitytoolkit.googleapis.com",
+      "labelMinor": "",
+      "rank": "service-identitytoolkit.googleapis.com",
+      "shape": "cloud",
+      "pseudo": true
+    },
+    "robotshop/rs-catalogue;<container_image>": {
+      "id": "robotshop/rs-catalogue;<container_image>",
+      "label": "robotshop/rs-catalogue",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-catalogue",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ],
+      "adjacency": ["robotshop/rs-mongodb;<container_image>"]
+    },
+    "robotshop/rs-user;<container_image>": {
+      "id": "robotshop/rs-user;<container_image>",
+      "label": "robotshop/rs-user",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-user",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ],
+      "adjacency": [
+        "redis;<container_image>",
+        "robotshop/rs-mongodb;<container_image>"
+      ]
+    },
+    "node;<container_image>": {
+      "id": "node;<container_image>",
+      "label": "node",
+      "labelMinor": "1 container",
+      "rank": "node",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "robotshop/rs-mysql-db;<container_image>": {
+      "id": "robotshop/rs-mysql-db;<container_image>",
+      "label": "robotshop/rs-mysql-db",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-mysql-db",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "custom-example-analyzer-tadis-ui;<container_image>": {
+      "id": "custom-example-analyzer-tadis-ui;<container_image>",
+      "label": "custom-example-analyzer-tadis-ui",
+      "labelMinor": "1 container",
+      "rank": "custom-example-analyzer-tadis-ui",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": [
+            {
+              "id": "label_com.docker.compose.project",
+              "entries": {
+                "label": "com.docker.compose.project",
+                "value": "custom-example-analyzer"
+              }
+            },
+            {
+              "id": "label_com.docker.compose.service",
+              "entries": {
+                "label": "com.docker.compose.service",
+                "value": "tadis-ui"
+              }
+            },
+            {
+              "id": "label_com.docker.compose.version",
+              "entries": {
+                "label": "com.docker.compose.version",
+                "value": "2.17.2"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "wurstmeister/zookeeper;<container_image>": {
+      "id": "wurstmeister/zookeeper;<container_image>",
+      "label": "wurstmeister/zookeeper",
+      "labelMinor": "1 container",
+      "rank": "wurstmeister/zookeeper",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "robotshop/rs-payment;<container_image>": {
+      "id": "robotshop/rs-payment;<container_image>",
+      "label": "robotshop/rs-payment",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-payment",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "robotshop/rs-shipping;<container_image>": {
+      "id": "robotshop/rs-shipping;<container_image>",
+      "label": "robotshop/rs-shipping",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-shipping",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "robotshop/rs-ratings;<container_image>": {
+      "id": "robotshop/rs-ratings;<container_image>",
+      "label": "robotshop/rs-ratings",
+      "labelMinor": "1 container",
+      "rank": "robotshop/rs-ratings",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": []
+        }
+      ]
+    },
+    "pseudo:uncontained:alvinwilta": {
+      "id": "pseudo:uncontained:alvinwilta",
+      "label": "Uncontained",
+      "labelMinor": "alvinwilta",
+      "rank": "uncontained:alvinwilta",
+      "shape": "square",
+      "stack": true,
+      "pseudo": true,
+      "adjacency": [
+        "out-theinternet",
+        "pseudo:uncontained:alvinwilta",
+        "robotshop/rs-ratings;<container_image>",
+        "robotshop/rs-user;<container_image>",
+        "service-content-autofill.googleapis.com",
+        "service-identitytoolkit.googleapis.com",
+        "weaveworks/scope;<container_image>"
+      ]
+    },
+    "custom-example-analyzer-custom-analyzer;<container_image>": {
+      "id": "custom-example-analyzer-custom-analyzer;<container_image>",
+      "label": "custom-example-analyzer-custom-analyzer",
+      "labelMinor": "1 container",
+      "rank": "custom-example-analyzer-custom-analyzer",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": [
+            {
+              "id": "label_com.docker.compose.project",
+              "entries": {
+                "label": "com.docker.compose.project",
+                "value": "custom-example-analyzer"
+              }
+            },
+            {
+              "id": "label_com.docker.compose.service",
+              "entries": {
+                "label": "com.docker.compose.service",
+                "value": "custom-analyzer"
+              }
+            },
+            {
+              "id": "label_com.docker.compose.version",
+              "entries": {
+                "label": "com.docker.compose.version",
+                "value": "2.17.2"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "weaveworks/scope;<container_image>": {
+      "id": "weaveworks/scope;<container_image>",
+      "label": "weaveworks/scope",
+      "labelMinor": "1 container",
+      "rank": "weaveworks/scope",
+      "shape": "hexagon",
+      "stack": true,
+      "metadata": [
+        {
+          "id": "container",
+          "label": "# Containers",
+          "value": "1",
+          "priority": 2.0,
+          "dataType": "number"
+        }
+      ],
+      "parents": [
+        {
+          "id": "alvinwilta;<host>",
+          "label": "alvinwilta",
+          "topologyId": "hosts"
+        }
+      ],
+      "tables": [
+        {
+          "id": "docker_image_label_",
+          "label": "Docker labels",
+          "type": "property-list",
+          "columns": null,
+          "rows": [
+            {
+              "id": "label_maintainer",
+              "entries": {
+                "label": "maintainer",
+                "value": "Weaveworks <help@weave.works>"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.revision",
+              "entries": {
+                "value": "0e1d3f84d9f1c2a43da290ca9e260b62fb4ef067",
+                "label": "org.opencontainers.image.revision"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.source",
+              "entries": {
+                "label": "org.opencontainers.image.source",
+                "value": "https://github.com/weaveworks/scope"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.title",
+              "entries": {
+                "label": "org.opencontainers.image.title",
+                "value": "scope"
+              }
+            },
+            {
+              "id": "label_org.opencontainers.image.vendor",
+              "entries": {
+                "label": "org.opencontainers.image.vendor",
+                "value": "Weaveworks"
+              }
+            },
+            {
+              "id": "label_works.weave.role",
+              "entries": {
+                "label": "works.weave.role",
+                "value": "system"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

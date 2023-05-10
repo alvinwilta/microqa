@@ -1,0 +1,11 @@
+name: tns
+repo_name: tns
+root_dir: ../tns/
+service_connection_type: file # file/api
+services:
+  app:
+    dir: app/
+    lang: go
+  lb:
+    dir: lb/
+    lang: go
