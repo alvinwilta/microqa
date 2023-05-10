@@ -1,13 +1,13 @@
 import re
 
 
-def extract_params(file_path):
+def php_extract_params(file_path):
     with open(file_path, "r") as f:
         file_contents = f.read()
 
     func_pattern = re.compile(
-        # taking those 3 function declaration into account
-        # name = function(param) | name = fn(param) => { |
+        # 3 types
+        # name = function(param) | name = fn(param) => { | function name(param)
         r"(?:(\w*)\s*=\s*function\s*\((.*?)\)|(\w+)\s*=\s*fn\((.*?)\)\s*=>|function\s*(\w*)\((.*?)\))",
         re.DOTALL,
     )
@@ -18,16 +18,12 @@ def extract_params(file_path):
         func_name = match[0] or match[2] or match[4]
         params = match[1] or match[3] or match[5]
         param_list = [
-            p.strip().split(" ")[1].replace("$", "")
+            p.strip().replace("$", "") if len(
+                p.split()) == 1 else p.strip().split(" ")[1].replace("$", "")
             for p in params.split(",")
-            if p.strip()
+            if p.strip().replace("$", "")
         ]
-        func_params[func_name] = param_list
+        if len(param_list) != 0:
+            func_params[func_name] = param_list
 
     return func_params
-
-
-if __name__ == "__main__":
-    file_path = "../robot-shop/ratings/html/src/Kernel.php"
-    func_params = extract_params(file_path)
-    print(func_params)
