@@ -13,7 +13,7 @@ sys.path.insert(0, "./rules/")
 import rules as ru
 
 
-config_filepath = "./config-alt.yaml"
+config_filepath = "./config.yaml"
 graph_output_dir = "./graph"
 
 allowed_lang = ["js", "py", "go", "java", "php"]
@@ -32,7 +32,7 @@ class Microservice:
         self.param = parse_parameter_from_config(config)
         self.call_graph = generate_graph_from_config(config)
         self.total_services = len(self.call_graph)
-        self.service_graph = parse_weavescope()
+        self.service_graph = parse_weavescope('alt' if self.config["name"] == "tns" else "robot")
         self.list_services = list(self.config['services'])
 
     def total_param(self) -> dict:
@@ -59,6 +59,7 @@ class Microservice:
         return list_total_unique_param
 
     def total_operations(self):
+        # Graph nodes
         list_total_service_ops = {}
         for service in self.call_graph:
             graph = pgv.AGraph()
@@ -67,6 +68,7 @@ class Microservice:
         return list_total_service_ops
 
     def total_edges(self):
+        # Graph edges
         list_total_one_service_edges = {}
         for service in self.call_graph:
             graph = pgv.AGraph()
