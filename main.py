@@ -181,5 +181,8 @@ if __name__ == "__main__":
     # print(ms.in_node())
     print()
     print("ALCOM Value: " + str(ru.ALCOM(ms.list_services, ms.total_param(),ms.total_unique_param(),ms.total_operations())))
+    print("ALCOM range: (worse) Less Cohesive 0 - 1 Highly Cohesive (better)")
     print("ACS Value: " + str(ru.ACS(ms.list_services,ms.in_node(),ms.out_node())))
+    print("ACS range: (better) Loosely coupled 0 - 1 Tightly Coupled (worse)")
     print("TCM Value: " + str(ru.TCM(ms.list_services,ms.total_services,ms.total_operations(),ms.total_edges(),ms.indirect_call())))
+    print("TCM range: (better) Low complexity 0 - + High complexity (worse)")
