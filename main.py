@@ -1,14 +1,14 @@
 import sys
 import os
 import yaml
-import networkx as nx
 import subprocess
 import pygraphviz as pgv
+from tqdm import tqdm
 
 sys.path.insert(0, "./param/")
 # fmt: off
 import lang_parser as lp
-from weavescope import parse_weavescope
+from parse_weavescope import parse_weavescope
 sys.path.insert(0, "./rules/")
 import rules as ru
 
@@ -25,6 +25,39 @@ lang_function_parser = {
     "php": lp.php_extract_params,
 }
 
+class Rule:
+    def __init__(self, val, name, param_min, param_max, is_best_left, max):
+        self.val = val
+        self.name = name
+        self.param_min = param_min
+        self.param_max = param_max
+        self.is_best_left = is_best_left
+        self.max = max
+
+    def printValue(self):
+        print(f"{self.name} Value: " + str(self.val))
+
+    def printProgress(self):
+        left = "better" if self.is_best_left else "worse"
+        right = "worse" if self.is_best_left else "better"
+
+        print(f"({left}) {self.param_min} 0 ", end='')
+        self.progress(self.max,self.val) if self.max != '+' else print('-', end='')
+        print(f" {self.max} {self.param_max} ({right})")
+
+    def progress(self, max, value):
+        value = int((value / max) * 15)
+        max = 15
+        remaining = max - value
+        filled = chr(0x2588) + chr(0x2502)
+        empty = chr(0x2591) + chr(0x2502)
+        filled_char = filled * value
+        empty_char = empty * remaining
+        print(filled_char + empty_char,end='')
+
+    def print(self):
+        self.printValue()
+        self.printProgress()
 
 class Microservice:
     def __init__(self, config):
@@ -32,7 +65,8 @@ class Microservice:
         self.param = parse_parameter_from_config(config)
         self.call_graph = generate_graph_from_config(config)
         self.total_services = len(self.call_graph)
-        self.service_graph = parse_weavescope('alt' if self.config["name"] == "tns" else "robot")
+        # self.service_graph = parse_weavescope('alt' if self.config["name"] == "tns" else "robot")
+        self.service_graph = parse_weavescope(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_param'] or '')
         self.list_services = list(self.config['services'])
 
     def total_param(self) -> dict:
@@ -180,9 +214,12 @@ if __name__ == "__main__":
     # print(ms.out_node())
     # print(ms.in_node())
     print()
-    print("ALCOM Value: " + str(ru.ALCOM(ms.list_services, ms.total_param(),ms.total_unique_param(),ms.total_operations())))
-    print("ALCOM range: (worse) Less Cohesive 0 - 1 Highly Cohesive (better)")
-    print("ACS Value: " + str(ru.ACS(ms.list_services,ms.in_node(),ms.out_node())))
-    print("ACS range: (better) Loosely coupled 0 - 1 Tightly Coupled (worse)")
-    print("TCM Value: " + str(ru.TCM(ms.list_services,ms.total_services,ms.total_operations(),ms.total_edges(),ms.indirect_call())))
-    print("TCM range: (better) Low complexity 0 - + High complexity (worse)")
+    alcom = ru.ALCOM(ms.list_services, ms.total_param(),ms.total_unique_param(),ms.total_operations())
+    c_alcom = Rule(alcom,"ALCOM","Less Cohesive","Highly Cohesive",False,1)
+    c_alcom.print()
+    acs = ru.ACS(ms.list_services,ms.in_node(),ms.out_node())
+    c_acs = Rule(acs, "ACS", "Loosely Coupled","Tightly Coupled",True,1)
+    c_acs.print()
+    tcm = ru.TCM(ms.list_services,ms.total_services,ms.total_operations(),ms.total_edges(),ms.indirect_call())
+    c_tcm = Rule(tcm,"TCM","Low Complexity","High Complexity",True,"+")
+    c_tcm.print()

@@ -1,8 +1,7 @@
 name: tns
-repo_name: tns
 root_dir: ../tns/
 service_connection_type: file # file/api
-service_connection_param: ./net_graph.json # file=filename, api=url api
+service_connection_param: ./net_graph_tns.json # file=filename, api=url api
 services:
   app:
     dir: app/
