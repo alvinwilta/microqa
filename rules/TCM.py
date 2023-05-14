@@ -21,7 +21,7 @@ def TCM_S(indirect_call, total_one_service_edges, total_service_ops, total_servi
     return ((indirect_call + total_service + total_service_ops) / total_one_service_edges)
 
 
-def TCM(list_services, total_service, list_total_service_ops, list_total_one_service_edges, list_indirect_call):
+def TCM(list_services: list, total_service: int, list_total_service_ops: dict, list_total_one_service_edges: dict, list_indirect_call: dict):
     tcm = 0
     for service in list_services:
         copf = COPF(
