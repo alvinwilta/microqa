@@ -131,7 +131,25 @@ class Microservice:
         return list_out_service_count
 
     def indirect_call(self):
-        return self.out_node()
+        result = {}
+        for node in self.service_graph.nodes():
+            result[node] = self.count_indirect_node(self.service_graph, node)
+        return result
+
+
+    def count_indirect_node(self, graph: pgv.AGraph, node: str):
+        queue = list(dict.fromkeys(graph.out_neighbors(node)))
+        visited = set(node)  # avoid cyclic counting
+        indirect_count = len(graph.out_edges(node))
+        while queue:
+            current = queue.pop()
+            neighbors = list(dict.fromkeys(graph.out_neighbors(current)))
+            indirect_count += len(graph.out_edges(current))
+            for node in neighbors:
+                if node not in visited:
+                    visited.add(node)
+                    queue.append(node)
+        return indirect_count
 
 
 def import_config(filepath):
@@ -215,11 +233,9 @@ if __name__ == "__main__":
     # print(ms.in_node())
     print()
     alcom = ru.ALCOM(ms.list_services, ms.total_param(),ms.total_unique_param(),ms.total_operations())
-    c_alcom = Rule(alcom,"ALCOM","Less Cohesive","Highly Cohesive",False,1)
-    c_alcom.print()
     acs = ru.ACS(ms.list_services,ms.in_node(),ms.out_node())
-    c_acs = Rule(acs, "ACS", "Loosely Coupled","Tightly Coupled",True,1)
-    c_acs.print()
     tcm = ru.TCM(ms.list_services,ms.total_services,ms.total_operations(),ms.total_edges(),ms.indirect_call())
-    c_tcm = Rule(tcm,"TCM","Low Complexity","High Complexity",True,"+")
-    c_tcm.print()
+    # print the metrics
+    c_alcom = Rule(alcom,"ALCOM","Less Cohesive","Highly Cohesive",False,1).print()
+    c_acs = Rule(acs, "ACS", "Loosely Coupled","Tightly Coupled",True,1).print()
+    c_tcm = Rule(tcm,"TCM","Low Complexity","High Complexity",True,"+").print()
