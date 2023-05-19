@@ -41,9 +41,9 @@ class Rule:
         left = "better" if self.is_best_left else "worse"
         right = "worse" if self.is_best_left else "better"
 
-        print(f"({left}) {self.param_min} 0 ", end='')
+        print(f"({left}) {self.param_min} [0] ", end='')
         self.progress(self.max,self.val) if self.max != '+' else print('-', end='')
-        print(f" {self.max} {self.param_max} ({right})")
+        print(f" [{self.max}] {self.param_max} ({right})")
 
     def progress(self, max, value):
         value = int((value / max) * 15)
@@ -66,7 +66,7 @@ class Microservice:
         self.call_graph = generate_graph_from_config(config)
         self.total_services = len(self.call_graph)
         # self.service_graph = parse_weavescope('alt' if self.config["name"] == "tns" else "robot")
-        self.service_graph = parse_weavescope(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_param'] or '')
+        self.service_graph = parse_weavescope(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_param'] or '', graph_output_dir)
         self.list_services = list(self.config['services'])
 
     def total_param(self) -> dict:

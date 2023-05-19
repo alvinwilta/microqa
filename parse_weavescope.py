@@ -17,7 +17,7 @@ def _match_regex_list(test_list, regex_list):
     return test_list
 
 
-def parse_weavescope(service_list, opt, arg):
+def parse_weavescope(service_list, opt, arg, out_dir):
     # repo = repository name to differentiate the container from other container in the machine
     # opt = options <file/api> to determine service graph source, file can be .dot file or .json (from weave)
     # arg = arguments for each opt. file = filepath, api = hostname
@@ -95,5 +95,5 @@ def parse_weavescope(service_list, opt, arg):
                     break
 
     G.layout(prog="dot")
-    G.draw("./temp.png")
+    G.write(out_dir + '/service-graph.dot')
     return G
