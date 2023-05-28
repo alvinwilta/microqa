@@ -155,7 +155,7 @@ def import_config(filepath):
     return config
 
 
-def clean_directory(path):
+def _clean_directory(path):
     # Iterate over the files and remove them. Called on startup
     files = os.listdir(path)
     for file in files:
@@ -166,7 +166,7 @@ def clean_directory(path):
 
 def _generate_graph_from_config(config):
     # manage commands for running the perl script
-    clean_directory(graph_output_dir)
+    _clean_directory(graph_output_dir)
     commands = []
     service_graph_filename = {}
     for service in config["services"]:
@@ -191,7 +191,7 @@ def _generate_graph_from_config(config):
 
 
 
-def extract_params_from_dir(dir_path, parser, lang):
+def _extract_params_from_dir(dir_path, parser, lang):
     params_dict = {}
     for dirpath, _, filenames in os.walk(dir_path):
         for filename in filenames:
@@ -206,7 +206,7 @@ def _parse_parameter_from_config(config):
     for service in config["services"]:
         lang = config["services"][service]["lang"]
         full_dir = config["root_dir"] + config["services"][service]["dir"]
-        params = extract_params_from_dir(
+        params = _extract_params_from_dir(
             full_dir, lang_function_parser[lang], lang)
         list_param[service] = params
     return list_param

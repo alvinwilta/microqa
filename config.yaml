@@ -1,7 +1,19 @@
 name: robot-shop
 root_dir: ../robot-shop/
 service_connection_type: file # file/api
-service_connection_param: ./net_graph.json # file=filename, api=api host
+service_connection_source: weavescope # dotfile or weavescope
+service_connection_filename: ./net_graph.json
+# FOR .DOT FILE
+# service_connection_type: file
+# service_connection_source: dot
+# service_connection_filename: ./graph/service-graph.json
+# FOR API
+# service_connection_type: api
+# service_connection_hostname: # weavescope host api, optional
+rules:
+  - ACS
+  - ALCOM
+  - TCM
 services:
   cart:
     dir: cart/
