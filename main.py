@@ -3,13 +3,13 @@ import os
 import yaml
 import subprocess
 import pygraphviz as pgv
-from tqdm import tqdm
 
-sys.path.insert(0, "./param/")
-# fmt: off
-import lang_parser as lp
-from parse_weavescope import parse_weavescope
+sys.path.insert(0, "./parser/param/")
+sys.path.insert(0, "./parser/service_graph/")
 sys.path.insert(0, "./rules/")
+# fmt: off
+from parser.param import *
+import parser.service_graph as sg
 import rules as ru
 
 
@@ -18,56 +18,47 @@ graph_output_dir = "./graph"
 
 allowed_lang = ["js", "py", "go", "java", "php"]
 lang_function_parser = {
-    "java": lp.java_extract_params,
-    "py": lp.py_extract_params,
-    "go": lp.go_extract_params,
-    "js": lp.js_extract_params,
-    "php": lp.php_extract_params,
+    "java": java_extract_params,
+    "py": py_extract_params,
+    "go": go_extract_params,
+    "js": js_extract_params,
+    "php": php_extract_params,
 }
-
-class Rule:
-    def __init__(self, val, name, param_min, param_max, is_best_left, max):
-        self.val = val
-        self.name = name
-        self.param_min = param_min
-        self.param_max = param_max
-        self.is_best_left = is_best_left
-        self.max = max
-
-    def printValue(self):
-        print(f"{self.name} Value: " + str(self.val))
-
-    def printProgress(self):
-        left = "better" if self.is_best_left else "worse"
-        right = "worse" if self.is_best_left else "better"
-
-        print(f"({left}) {self.param_min} [0] ", end='')
-        self.progress(self.max,self.val) if self.max != '+' else print('-', end='')
-        print(f" [{self.max}] {self.param_max} ({right})")
-
-    def progress(self, max, value):
-        value = int((value / max) * 15)
-        max = 15
-        remaining = max - value
-        filled = chr(0x2588) + chr(0x2502)
-        empty = chr(0x2591) + chr(0x2502)
-        filled_char = filled * value
-        empty_char = empty * remaining
-        print(filled_char + empty_char,end='')
-
-    def print(self):
-        self.printValue()
-        self.printProgress()
+rule_functions = {
+    'ACS': ru.ACS,
+    'ALCOM': ru.ALCOM,
+    'TCM': ru.TCM
+}
 
 class Microservice:
     def __init__(self, config):
         self.config = config
-        self.param = parse_parameter_from_config(config)
-        self.call_graph = generate_graph_from_config(config)
+        self.param = _parse_parameter_from_config(config)
+        self.call_graph = _generate_graph_from_config(config)
         self.total_services = len(self.call_graph)
         # self.service_graph = parse_weavescope('alt' if self.config["name"] == "tns" else "robot")
-        self.service_graph = parse_weavescope(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_param'] or '', graph_output_dir)
+        self.service_graph = self._import_service_graph()
         self.list_services = list(self.config['services'])
+
+    def _import_service_graph(self):
+        # adjust according to the options. Currently supported options are:
+        # - file with .dot
+        # - file with .json obtained from the weavescope API
+        # - direct connection with weavescope API
+        # add more on service_graph/ directory
+        if self.config['service_connection_type'] == 'file':
+            if self.config['service_connection_source'] == 'dot':
+                return sg.dot_extract_connection(self.config['service_connection_param'])
+            elif self.config['service_connection_source'] == 'weavescope':
+                return sg.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_filename'] or '', graph_output_dir)
+            else:
+                print("unrecognized service connection source, current available source for 'file' type is 'dot' or 'weavescope'.")
+                quit()
+        elif self.config['service_connection_type'] == 'api':
+            return sg.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_hostname'] or '', graph_output_dir)
+        else:
+            print("unrecognized connection type, make sure that the input is either 'file' or 'api'.")
+            quit()
 
     def total_param(self) -> dict:
         list_total_param = {}
@@ -82,7 +73,7 @@ class Microservice:
             list_total_param[service] = total_elements
         return list_total_param
 
-    def total_unique_param(self):
+    def total_unique_param(self) -> dict:
         list_total_unique_param = {}
         for service in self.param:
             param_set = set()
@@ -92,7 +83,7 @@ class Microservice:
             list_total_unique_param[service] = len(param_set)
         return list_total_unique_param
 
-    def total_operations(self):
+    def total_service_ops(self) -> dict:
         # Graph nodes
         list_total_service_ops = {}
         for service in self.call_graph:
@@ -101,7 +92,7 @@ class Microservice:
             list_total_service_ops[service] = len(graph.nodes())
         return list_total_service_ops
 
-    def total_edges(self):
+    def total_edges(self) -> dict:
         # Graph edges
         list_total_one_service_edges = {}
         for service in self.call_graph:
@@ -110,7 +101,7 @@ class Microservice:
             list_total_one_service_edges[service] = len(graph.edges())
         return list_total_one_service_edges
 
-    def in_node(self):
+    def in_node(self) -> dict:
         list_in_service_count = {}
         for target in self.service_graph.nodes():
             in_count = 0
@@ -120,7 +111,7 @@ class Microservice:
             list_in_service_count[target] = in_count
         return list_in_service_count
 
-    def out_node(self):
+    def out_node(self) -> dict:
         list_out_service_count = {}
         for target in self.service_graph.nodes():
             out_count = 0
@@ -130,14 +121,14 @@ class Microservice:
             list_out_service_count[target] = out_count
         return list_out_service_count
 
-    def indirect_call(self):
-        result = {}
+    def indirect_call(self) -> dict:
+        list_indirect_call = {}
         for node in self.service_graph.nodes():
-            result[node] = self.count_indirect_node(self.service_graph, node)
-        return result
+            list_indirect_call[node] = self._count_indirect_node(self.service_graph, node)
+        return list_indirect_call
 
 
-    def count_indirect_node(self, graph: pgv.AGraph, node: str):
+    def _count_indirect_node(self, graph: pgv.AGraph, node: str):
         queue = list(dict.fromkeys(graph.out_neighbors(node)))
         visited = set(node)  # avoid cyclic counting
         indirect_count = len(graph.out_edges(node))
@@ -153,6 +144,7 @@ class Microservice:
 
 
 def import_config(filepath):
+    # read yaml configuration
     config = {}
     with open(filepath, "r") as stream:
         try:
@@ -164,15 +156,15 @@ def import_config(filepath):
 
 
 def clean_directory(path):
+    # Iterate over the files and remove them. Called on startup
     files = os.listdir(path)
-    # Iterate over the files and remove them
     for file in files:
         file_path = os.path.join(path, file)
         if os.path.isfile(file_path):
             os.remove(file_path)
 
 
-def generate_graph_from_config(config):
+def _generate_graph_from_config(config):
     # manage commands for running the perl script
     clean_directory(graph_output_dir)
     commands = []
@@ -209,7 +201,7 @@ def extract_params_from_dir(dir_path, parser, lang):
     return params_dict
 
 
-def parse_parameter_from_config(config):
+def _parse_parameter_from_config(config):
     list_param = {}
     for service in config["services"]:
         lang = config["services"][service]["lang"]
@@ -223,19 +215,12 @@ def parse_parameter_from_config(config):
 if __name__ == "__main__":
     config = import_config(config_filepath)
     ms = Microservice(config)
-    # debug
-    # print(ms.total_param())
-    # print(ms.total_unique_param())
-    # print(ms.total_operations())
-    # print(ms.total_edges())
-    # print(ms.service_count)
-    # print(ms.out_node())
-    # print(ms.in_node())
     print()
-    alcom = ru.ALCOM(ms.list_services, ms.total_param(),ms.total_unique_param(),ms.total_operations())
-    acs = ru.ACS(ms.list_services,ms.in_node(),ms.out_node())
-    tcm = ru.TCM(ms.list_services,ms.total_services,ms.total_operations(),ms.total_edges(),ms.indirect_call())
+    param = ru.RuleInterface(ms.total_services, ms.list_services, ms.total_param(), ms.total_unique_param(), ms.total_service_ops(),ms.total_edges(),ms.in_node(),ms.out_node(),ms.indirect_call())
     # print the metrics
-    c_alcom = Rule(alcom,"ALCOM","Less Cohesive","Highly Cohesive",False,1).print()
-    c_acs = Rule(acs, "ACS", "Loosely Coupled","Tightly Coupled",True,1).print()
-    c_tcm = Rule(tcm,"TCM","Low Complexity","High Complexity",True,"+").print()
+    if 'ALCOM' in config['rules']: 
+        ru.ALCOM(param).print()
+    if 'ACS' in config['rules']: 
+        ru.ACS(param).print()
+    if 'TCM' in config['rules']: 
+        ru.TCM(param).print()
