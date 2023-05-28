@@ -1,5 +1,0 @@
-from java_param import java_extract_params
-from go_param import go_extract_params
-from js_param import js_extract_params
-from py_param import py_extract_params
-from php_param import php_extract_params
