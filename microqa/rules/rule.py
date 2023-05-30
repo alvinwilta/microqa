@@ -1,4 +1,5 @@
-from interface import RuleInterface
+from . import interface
+import sys
 
 
 class Rule:
@@ -6,7 +7,7 @@ class Rule:
     Rule class, every new rule must extend from this class
     """
 
-    def __init__(self, param: RuleInterface):
+    def __init__(self, param: interface.RuleInterface):
         self.val = 0.00             # default value
         self.param = param          # parameter object, retrieved from the main script
         self.rule_name = 'defaultrule'
@@ -20,8 +21,8 @@ class Rule:
         ----
         Override this function! Put the calculations in self.val
         """
-        print("empty rule!")
-        quit()
+        print("Error: Calculate not yet implemented or empty rule!")
+        sys.exit(21)
 
     def setup_param(self):
         """Implement
@@ -38,8 +39,8 @@ class Rule:
         @param self.best: str ('left' or 'right') \\
             better quality moving towards minimum (left) or maximum (right) \n
         """
-        print("empty rule!")
-        quit()
+        print("Error: Setup param not yet implemented or empty rule!")
+        sys.exit(22)
 
     def print(self):
         self.setup_param()
@@ -59,7 +60,7 @@ class Rule:
             right = 'better'
         else:
             print("rule 'best' value must be either 'left' or 'right'!")
-            quit()
+            sys.exit(23)
 
         print(f"({left}) {self.param_min} [0] ", end='')
         self._progress_bar(

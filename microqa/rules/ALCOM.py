@@ -1,8 +1,7 @@
-from rule import Rule
-from interface import RuleInterface
+from . import rule
 
 
-class ALCOM(Rule):
+class ALCOM(rule.Rule):
     def calculate(self):
         sum_lcom = 0
         for service in self.param.list_services:

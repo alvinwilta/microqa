@@ -3,6 +3,7 @@ import re
 import pygraphviz as pgv
 import requests
 import os
+import sys
 
 
 def _match_regex_list(test_list, regex_list):
@@ -28,7 +29,7 @@ def weavescope_extract_connection(service_list, type, arg, out_dir):
                 raw_data = json.load(f)
         else:
             print('only .json output from weavescope is allowed')
-            quit()
+            sys.exit(32)
     elif type == 'api':
         if arg is None or arg == '':
             arg = 'localhost:4040'
@@ -37,7 +38,7 @@ def weavescope_extract_connection(service_list, type, arg, out_dir):
         raw_data = json.loads(response.text)
     else:
         print('parse option for weavescope not recognized.')
-        quit()
+        sys.exit(12)
     try:
         # use repo name
         pattern = []
@@ -95,7 +96,8 @@ def weavescope_extract_connection(service_list, type, arg, out_dir):
         return G
     except:
         if type == 'api':
-            print('api error, is the weavescope running?')
+            print('Error: API host not found, is WeaveScope running?')
+            sys.exit()
         else:
-            print('json parse error, is the json file from weavescope?')
-        quit()
+            print('Error: Json parse error, is the json file from WeaveScope?')
+            sys.exit()

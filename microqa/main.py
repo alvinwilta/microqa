@@ -3,32 +3,29 @@ import os
 import yaml
 import subprocess
 import pygraphviz as pgv
+import shutil
 
-sys.path.insert(0, "./parser/param/")
-sys.path.insert(0, "./parser/service_graph/")
-sys.path.insert(0, "./rules/")
-# fmt: off
-from parser.param import *
-import parser.service_graph as sg
-import rules as ru
+from microqa.param import java_param, go_param, js_param, php_param, py_param
+from microqa.service_graph import dot_graph, weavescope_graph
+from microqa.rules import ACS, ALCOM, TCM, interface
 
-
-config_filepath = "./config.yaml"
+config_filepath = "./mqaconfig.yaml"
 graph_output_dir = "./graph"
 
 allowed_lang = ["js", "py", "go", "java", "php"]
 lang_function_parser = {
-    "java": java_extract_params,
-    "py": py_extract_params,
-    "go": go_extract_params,
-    "js": js_extract_params,
-    "php": php_extract_params,
+    "java": java_param.java_extract_params,
+    "py": py_param.py_extract_params,
+    "go": go_param.go_extract_params,
+    "js": js_param.js_extract_params,
+    "php": php_param.php_extract_params,
 }
 rule_functions = {
-    'ACS': ru.ACS,
-    'ALCOM': ru.ALCOM,
-    'TCM': ru.TCM
+    'ACS': ACS.ACS,
+    'ALCOM': ALCOM.ALCOM,
+    'TCM': TCM.TCM
 }
+
 
 class Microservice:
     def __init__(self, config):
@@ -48,17 +45,18 @@ class Microservice:
         # add more on service_graph/ directory
         if self.config['service_connection_type'] == 'file':
             if self.config['service_connection_source'] == 'dot':
-                return sg.dot_extract_connection(self.config['service_connection_param'])
+                return dot_graph.dot_extract_connection(self.config['service_connection_param'])
             elif self.config['service_connection_source'] == 'weavescope':
-                return sg.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_filename'] or '', graph_output_dir)
+                return weavescope_graph.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_filename'] or '', graph_output_dir)
             else:
-                print("unrecognized service connection source, current available source for 'file' type is 'dot' or 'weavescope'.")
-                quit()
+                print("Error: Unrecognized service connection source, current available source for 'file' type is 'dot' or 'weavescope'.")
+                sys.exit(11)
         elif self.config['service_connection_type'] == 'api':
-            return sg.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_hostname'] or '', graph_output_dir)
+            return weavescope_graph.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_hostname'] or '', graph_output_dir)
         else:
-            print("unrecognized connection type, make sure that the input is either 'file' or 'api'.")
-            quit()
+            print(
+                "Error: Unrecognized connection type, make sure that the input is either 'file' or 'api'.")
+            sys.exit(12)
 
     def total_param(self) -> dict:
         list_total_param = {}
@@ -124,9 +122,9 @@ class Microservice:
     def indirect_call(self) -> dict:
         list_indirect_call = {}
         for node in self.service_graph.nodes():
-            list_indirect_call[node] = self._count_indirect_node(self.service_graph, node)
+            list_indirect_call[node] = self._count_indirect_node(
+                self.service_graph, node)
         return list_indirect_call
-
 
     def _count_indirect_node(self, graph: pgv.AGraph, node: str):
         queue = list(dict.fromkeys(graph.out_neighbors(node)))
@@ -155,18 +153,29 @@ def import_config(filepath):
     return config
 
 
-def _clean_directory(path):
-    # Iterate over the files and remove them. Called on startup
-    files = os.listdir(path)
-    for file in files:
-        file_path = os.path.join(path, file)
-        if os.path.isfile(file_path):
-            os.remove(file_path)
+def create_dir(path):
+    try:
+        if not os.path.exists(path):
+            os.makedirs(path)
+    except OSError:
+        print('Error: Creating directory. ' + path)
+
+
+def clean_dir(path):
+    try:
+        if os.path.exists(path):
+            shutil.rmtree(path)
+    except Exception:
+        print('Error: Cleaning directory. ' + path)
 
 
 def _generate_graph_from_config(config):
-    # manage commands for running the perl script
-    _clean_directory(graph_output_dir)
+    """
+    manage commands for running the perl script
+    """
+    # clean graph output directory
+    clean_dir(graph_output_dir)
+    create_dir(graph_output_dir)
     commands = []
     service_graph_filename = {}
     for service in config["services"]:
@@ -190,7 +199,6 @@ def _generate_graph_from_config(config):
     return service_graph_filename
 
 
-
 def _extract_params_from_dir(dir_path, parser, lang):
     params_dict = {}
     for dirpath, _, filenames in os.walk(dir_path):
@@ -212,15 +220,18 @@ def _parse_parameter_from_config(config):
     return list_param
 
 
-if __name__ == "__main__":
+def main():
     config = import_config(config_filepath)
     ms = Microservice(config)
     print()
-    param = ru.RuleInterface(ms.total_services, ms.list_services, ms.total_param(), ms.total_unique_param(), ms.total_service_ops(),ms.total_edges(),ms.in_node(),ms.out_node(),ms.indirect_call())
+    ruleinput = interface.RuleInterface(ms.total_services, ms.list_services, ms.total_param(), ms.total_unique_param(
+    ), ms.total_service_ops(), ms.total_edges(), ms.in_node(), ms.out_node(), ms.indirect_call())
     # print the metrics
-    if 'ALCOM' in config['rules']: 
-        ru.ALCOM(param).print()
-    if 'ACS' in config['rules']: 
-        ru.ACS(param).print()
-    if 'TCM' in config['rules']: 
-        ru.TCM(param).print()
+    if rule_functions[config['rules']]:
+        rule_functions[config['rules']](ruleinput).print()
+    # clean up directory
+    clean_dir(graph_output_dir)
+
+
+if __name__ == "__main__":
+    main()

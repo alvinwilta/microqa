@@ -1,7 +1,7 @@
-from rule import Rule
+from . import rule
 
 
-class ACS(Rule):
+class ACS(rule.Rule):
     def calculate(self):
         sum_ACS_S = 0
         for service in self.param.list_services:

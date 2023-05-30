@@ -1,7 +1,7 @@
-from rule import Rule
+from . import rule
 
 
-class TCM(Rule):
+class TCM(rule.Rule):
     def calculate(self):
         tcm = 0
         for service in self.param.list_services:

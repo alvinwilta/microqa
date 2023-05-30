@@ -1,5 +1,6 @@
 import os
 import pygraphviz as pgv
+import sys
 
 
 def dot_extract_connection(filename):
@@ -9,5 +10,5 @@ def dot_extract_connection(filename):
         G.read(filename)
         return G
     else:
-        print('only .dot file are allowed')
-        quit()
+        print('Error: Only .dot file are allowed')
+        sys.exit(31)

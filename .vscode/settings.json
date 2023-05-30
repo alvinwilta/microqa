@@ -1,3 +1,6 @@
 {
-  "python.analysis.extraPaths": ["./param", "./rules"]
+  "python.analysis.extraPaths": ["./param", "./rules"],
+  "ocaml.sandbox": {
+    "kind": "global"
+  }
 }
