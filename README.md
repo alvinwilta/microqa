@@ -19,9 +19,9 @@ convert dot to png
 dot -Tpng <filename>.dot -o <outputfile>.png
 ```
 
-[x] Finish ingraph
-[ ] Test API and dot file for graph
-[ ] Manage perl to execute callgraph, make a script to install perl
+- [x] Finish ingraph
+- [ ] Test API and dot file for graph
+- [x] Manage perl to execute callgraph, make a script to install perl
 
 # Error Code Documentation
 
