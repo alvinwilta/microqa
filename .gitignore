@@ -2,3 +2,6 @@ __pycache__
 graph
 venv
 .venv
+.vscode
+build
+*.egg-info
