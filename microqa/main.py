@@ -9,7 +9,7 @@ from microqa.param import java_param, go_param, js_param, php_param, py_param
 from microqa.service_graph import dot_graph, weavescope_graph
 from microqa.rules import ACS, ALCOM, TCM, interface
 
-config_filepath = "./mqaconfig.yaml"
+config_filepath = "./microqa-config.yaml"
 graph_output_dir = "./graph"
 
 allowed_lang = ["js", "py", "go", "java", "php"]
@@ -189,7 +189,7 @@ def _generate_graph_from_config(config):
         out_file = f'{graph_output_dir}/{config["name"]}-{service}.dot'
         service_graph_filename[service] = out_file
         commands.append(
-            ["perl", "callGraph", full_dir, "-language", lang, "-output", out_file]
+            ["perl", "microqa/callGraph", full_dir, "-language", lang, "-output", out_file]
         )
 
     # run multiple process simultaneously
@@ -227,8 +227,9 @@ def main():
     ruleinput = interface.RuleInterface(ms.total_services, ms.list_services, ms.total_param(), ms.total_unique_param(
     ), ms.total_service_ops(), ms.total_edges(), ms.in_node(), ms.out_node(), ms.indirect_call())
     # print the metrics
-    if rule_functions[config['rules']]:
-        rule_functions[config['rules']](ruleinput).print()
+    for rule in config['rules']:
+        if rule_functions[rule]:
+            rule_functions[rule](ruleinput).print()
     # clean up directory
     clean_dir(graph_output_dir)
 
