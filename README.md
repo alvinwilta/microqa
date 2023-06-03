@@ -1,19 +1,41 @@
 # Microservice Quality Assesment
 
-built using callGraph from [koknat/callGraph](https://github.com/koknat/callGraph)
+## Credits
 
-configured with microqa-config.yaml
+built using callGraph from [koknat/callGraph](https://github.com/koknat/callGraph)
 
 microservice examples used:
 
 - robot-shop: https://github.com/instana/robot-shop
 - tns: https://github.com/peterbourgon/tns
 
+## Running
+
+Run the script with makefile
+
+```bash
+cd src/
+
+make all
+```
+
+## Documentations
+
+configured with microqa-config.yaml
+
+Optional Flags:
+
+```
+Determining the path of the config file:
+
+--config <config filepath>
+```
+
 - [x] Finish ingraph
 - [ ] Test API and dot file for graph
 - [x] Manage perl to execute callgraph, make a script to install perl
 
-# Error Code Documentation
+# Error Codes
 
 Error codes are 2 digit errors. The first digit indicates the module where the error occurs and the second is the indication of the error. Below are the known errors:
 
@@ -31,11 +53,35 @@ Error codes are 2 digit errors. The first digit indicates the module where the e
 
 # Other useful commands:
 
+## Run via docker
+
+```bash
+docker run -v "<source code dir>:/app/<repo dir based on config>" -v "<config filepath>:/app/<config filename>" -v "<weavescope json filepath>:/app/<json filepath>" --network=host microqa
+```
+
+the json filepath volume is optional, only provide the path if you used the json file.
+
+the network flag is optional, only provide the flag if you need to access host network.
+
+e.g.
+
+```bash
+docker run -v "/home/alvinwilta/Documents/kuliah/Tugas Akhir/2_codes/robot-shop/:/app/robot-shop/" -v "./microqa-config.yaml:/app microqa-config.yaml" -v "./net_graph.json:/app/net_graph.json" microqa
+```
+
+or
+
+```bash
+docker run -v "/home/alvinwilta/Documents/kuliah/Tugas Akhir/2_codes/robot-shop/:/app/robot-shop/" -v "./microqa-config.yaml:/app microqa-config.yaml" --network=host microqa
+```
+
+## Running CallGraph independentlu
+
 ```
 ./callGraph <dir> -language <lang> -output <output file>
 ```
 
-convert dot to png
+## Convert dot to png
 
 ```
 dot -Tpng <filename>.dot -o <outputfile>.png
