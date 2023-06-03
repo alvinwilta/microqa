@@ -19,6 +19,8 @@ cd src/
 make all
 ```
 
+there is a github action example on microqa.yml
+
 ## Documentations
 
 configured with microqa-config.yaml
@@ -85,4 +87,10 @@ docker run -v "/home/alvinwilta/Documents/kuliah/Tugas Akhir/2_codes/robot-shop/
 
 ```
 dot -Tpng <filename>.dot -o <outputfile>.png
+```
+
+## Building the dockerfile
+
+```
+docker build -t microqa src/
 ```
