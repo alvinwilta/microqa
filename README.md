@@ -1,23 +1,13 @@
 # Microservice Quality Assesment
 
-built using callGraph
+built using callGraph from [koknat/callGraph](https://github.com/koknat/callGraph)
 
-```
-./callGraph <dir> -language <lang> -output <output file>
-```
-
-configured with config.yaml
+configured with microqa-config.yaml
 
 microservice examples used:
 
 - robot-shop: https://github.com/instana/robot-shop
 - tns: https://github.com/peterbourgon/tns
-
-convert dot to png
-
-```
-dot -Tpng <filename>.dot -o <outputfile>.png
-```
 
 - [x] Finish ingraph
 - [ ] Test API and dot file for graph
@@ -38,3 +28,15 @@ Error codes are 2 digit errors. The first digit indicates the module where the e
 | 32         | Service Graph | Invalid file type for file defined in service_connection_filename argument (.json file) |
 | 33         | Service Graph | Invalid weavescope json file                                                            |
 | 34         | Service Graph | Weavescope API not connected                                                            |
+
+# Other useful commands:
+
+```
+./callGraph <dir> -language <lang> -output <output file>
+```
+
+convert dot to png
+
+```
+dot -Tpng <filename>.dot -o <outputfile>.png
+```

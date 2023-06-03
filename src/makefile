@@ -1,6 +1,7 @@
 VENV_NAME = .venv
 PACKAGE_NAME = microqa
 PYTHON = ${VENV_NAME}/bin/python
+CONFIG_DIR = ../microqa-config-make.yaml
 
 .PHONY: all clean
 
@@ -18,4 +19,4 @@ install: ${VENV_NAME}
 	@echo "installed required packages"
 
 run: install
-	${PYTHON} -m ${PACKAGE_NAME}.main
+	${PYTHON} -m ${PACKAGE_NAME}.main -c ${CONFIG_DIR}

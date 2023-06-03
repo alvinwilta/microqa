@@ -4,12 +4,13 @@ import yaml
 import subprocess
 import pygraphviz as pgv
 import shutil
+import argparse
 
 from microqa.param import java_param, go_param, js_param, php_param, py_param
 from microqa.service_graph import dot_graph, weavescope_graph
 from microqa.rules import ACS, ALCOM, TCM, interface
 
-config_filepath = "./microqa-config.yaml"
+default_config_filepath = "./microqa-config.yaml"
 graph_output_dir = "./graph"
 
 allowed_lang = ["js", "py", "go", "java", "php"]
@@ -221,7 +222,10 @@ def _parse_parameter_from_config(config):
 
 
 def main():
-    config = import_config(config_filepath)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c","--config", help="directory to configuration file", default=default_config_filepath)
+    parsed_config = parser.parse_args()
+    config = import_config(parsed_config.config)
     ms = Microservice(config)
     print()
     ruleinput = interface.RuleInterface(ms.total_services, ms.list_services, ms.total_param(), ms.total_unique_param(

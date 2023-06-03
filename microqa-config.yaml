@@ -1,5 +1,5 @@
 name: robot-shop
-root_dir: ../robot-shop/
+root_dir: robot-shop/
 service_connection_type: file # file/api
 service_connection_source: weavescope # dotfile or weavescope
 service_connection_filename: net_graph.json
