@@ -6,7 +6,7 @@ service_connection_filename: net_graph.json
 # FOR .DOT FILE
 # service_connection_type: file
 # service_connection_source: dot
-# service_connection_filename: ./graph/service-graph.json
+# service_connection_filename: service-graph.dot
 # FOR API
 # service_connection_type: api
 # service_connection_hostname: # weavescope host api, optional
