@@ -46,7 +46,7 @@ class Microservice:
         # add more on service_graph/ directory
         if self.config['service_connection_type'] == 'file':
             if self.config['service_connection_source'] == 'dot':
-                return dot_graph.dot_extract_connection(self.config['service_connection_param'])
+                return dot_graph.dot_extract_connection(self.config['service_connection_filename'])
             elif self.config['service_connection_source'] == 'weavescope':
                 return weavescope_graph.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_filename'] or '', graph_output_dir)
             else:
@@ -103,8 +103,12 @@ class Microservice:
     def in_node(self) -> dict:
         list_in_service_count = {}
         for target in self.service_graph.nodes():
+            if target not in self.list_services:
+                continue
             in_count = 0
             for node in self.service_graph.nodes():
+                if node not in self.list_services:
+                    continue
                 if self.service_graph.has_edge(node, target):
                     in_count += 1
             list_in_service_count[target] = in_count
@@ -113,8 +117,12 @@ class Microservice:
     def out_node(self) -> dict:
         list_out_service_count = {}
         for target in self.service_graph.nodes():
+            if target not in self.list_services:
+                continue
             out_count = 0
             for node in self.service_graph.nodes():
+                if node not in self.list_services:
+                    continue
                 if self.service_graph.has_edge(target, node):
                     out_count += 1
             list_out_service_count[target] = out_count
@@ -140,6 +148,23 @@ class Microservice:
                     visited.add(node)
                     queue.append(node)
         return indirect_count
+    
+    def printAttr(self):
+        print('Total Param')
+        print(self.total_param())
+        print('Total Unique Param')
+        print(self.total_unique_param())
+        print('Total Service Ops')
+        print(self.total_service_ops())
+        print('Total Edges')
+        print(self.total_edges())
+        print('Total Services Count')
+        print(self.total_services)
+        print('Total Out Node')
+        print(self.out_node())
+        print('Total In Node')
+        print(self.in_node())
+        print()
 
 
 def import_config(filepath):
@@ -224,10 +249,13 @@ def _parse_parameter_from_config(config):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c","--config", help="directory to configuration file", default=default_config_filepath)
+    parser.add_argument("-v","--verbose", help="prints additional log for debugging", action='store_true')
     parsed_config = parser.parse_args()
     config = import_config(parsed_config.config)
     ms = Microservice(config)
     print()
+    if parsed_config.verbose:
+        ms.printAttr()
     ruleinput = interface.RuleInterface(ms.total_services, ms.list_services, ms.total_param(), ms.total_unique_param(
     ), ms.total_service_ops(), ms.total_edges(), ms.in_node(), ms.out_node(), ms.indirect_call())
     # print the metrics
@@ -235,7 +263,7 @@ def main():
         if rule_functions[rule]:
             rule_functions[rule](ruleinput).print()
     # clean up directory
-    clean_dir(graph_output_dir)
+    # clean_dir(graph_output_dir)
 
 
 if __name__ == "__main__":
