@@ -263,7 +263,7 @@ def main():
         if rule_functions[rule]:
             rule_functions[rule](ruleinput).print()
     # clean up directory
-    # clean_dir(graph_output_dir)
+    clean_dir(graph_output_dir)
 
 
 if __name__ == "__main__":
