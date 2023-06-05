@@ -1,12 +1,12 @@
 name: robot-shop
 root_dir: ../../robot-shop/
-service_connection_type: file # file/api
-service_connection_source: weavescope # dotfile or weavescope
-service_connection_filename: ../net_graph.json
+# service_connection_type: file # file/api
+# service_connection_source: weavescope # dotfile or weavescope
+# service_connection_filename: ../net_graph.json
 # FOR .DOT FILE
-# service_connection_type: file
-# service_connection_source: dot
-# service_connection_filename: service-graph.dot
+service_connection_type: file
+service_connection_source: dot
+service_connection_filename: ../service-graph.dot
 # FOR API
 # service_connection_type: api
 # service_connection_hostname: # weavescope host api, optional
@@ -21,18 +21,18 @@ services:
   catalog:
     dir: catalogue/
     lang: js
-  dispatch:
-    dir: dispatch/
-    lang: go
-  payment:
-    dir: payment/
-    lang: py
-  ratings:
-    dir: ratings/html/
-    lang: php
-  shipping:
-    dir: shipping/src/main/java/com/instana/robotshop/shipping/
-    lang: java
-  user:
-    dir: user/
-    lang: js
+  # dispatch:
+  #   dir: dispatch/
+  #   lang: go
+  # payment:
+  #   dir: payment/
+  #   lang: py
+  # ratings:
+  #   dir: ratings/html/
+  #   lang: php
+  # shipping:
+  #   dir: shipping/src/main/java/com/instana/robotshop/shipping/
+  #   lang: java
+  # user:
+  #   dir: user/
+  #   lang: js
