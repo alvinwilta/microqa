@@ -103,29 +103,27 @@ class Microservice:
     def in_node(self) -> dict:
         list_in_service_count = {}
         for target in self.service_graph.nodes():
-            if target not in self.list_services:
-                continue
             in_count = 0
             for node in self.service_graph.nodes():
-                if node not in self.list_services:
+                if node not in self.list_services and target not in self.list_services:
                     continue
                 if self.service_graph.has_edge(node, target):
                     in_count += 1
-            list_in_service_count[target] = in_count
+            if target in self.list_services:
+                list_in_service_count[target] = in_count
         return list_in_service_count
 
     def out_node(self) -> dict:
         list_out_service_count = {}
         for target in self.service_graph.nodes():
-            if target not in self.list_services:
-                continue
             out_count = 0
             for node in self.service_graph.nodes():
-                if node not in self.list_services:
+                if node not in self.list_services and target not in self.list_services:
                     continue
                 if self.service_graph.has_edge(target, node):
                     out_count += 1
-            list_out_service_count[target] = out_count
+            if target in self.list_services:
+                list_out_service_count[target] = out_count
         return list_out_service_count
 
     def indirect_call(self) -> dict:

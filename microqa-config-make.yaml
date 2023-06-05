@@ -21,18 +21,18 @@ services:
   catalog:
     dir: catalogue/
     lang: js
-  # dispatch:
-  #   dir: dispatch/
-  #   lang: go
-  # payment:
-  #   dir: payment/
-  #   lang: py
-  # ratings:
-  #   dir: ratings/html/
-  #   lang: php
-  # shipping:
-  #   dir: shipping/src/main/java/com/instana/robotshop/shipping/
-  #   lang: java
-  # user:
-  #   dir: user/
-  #   lang: js
+  dispatch:
+    dir: dispatch/
+    lang: go
+  payment:
+    dir: payment/
+    lang: py
+  ratings:
+    dir: ratings/html/
+    lang: php
+  shipping:
+    dir: shipping/src/main/java/com/instana/robotshop/shipping/
+    lang: java
+  user:
+    dir: user/
+    lang: js

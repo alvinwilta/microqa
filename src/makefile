@@ -19,7 +19,7 @@ install: ${VENV_NAME}
 	@echo "installed required packages"
 
 run: install
-	${PYTHON} -m ${PACKAGE_NAME}.main -c ${CONFIG_DIR}
+	${PYTHON} -m ${PACKAGE_NAME}.main -v -c ${CONFIG_DIR}
 
 build: clean
 	docker build -t microqa ./

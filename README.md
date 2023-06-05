@@ -92,5 +92,5 @@ dot -Tpng <filename>.dot -o <outputfile>.png
 ## Building the dockerfile
 
 ```
-docker build -t microqa src/
+docker build -t alvinwilta/microqa src/
 ```
