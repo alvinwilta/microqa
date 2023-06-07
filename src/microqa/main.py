@@ -129,6 +129,8 @@ class Microservice:
     def indirect_call(self) -> dict:
         list_indirect_call = {}
         for node in self.service_graph.nodes():
+            if node not in self.list_services:
+                continue
             list_indirect_call[node] = self._count_indirect_node(
                 self.service_graph, node)
         return list_indirect_call
@@ -162,6 +164,8 @@ class Microservice:
         print(self.out_node())
         print('Total In Node')
         print(self.in_node())
+        print('Total Indirect call')
+        print(self.indirect_call())
         print()
 
 

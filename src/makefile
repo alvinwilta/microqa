@@ -1,7 +1,7 @@
 VENV_NAME = .venv
 PACKAGE_NAME = microqa
 PYTHON = ${VENV_NAME}/bin/python
-CONFIG_DIR = ../microqa-config-make.yaml
+CONFIG_DIR = ../microqa-config-alt.yaml
 
 .PHONY: all clean
 
