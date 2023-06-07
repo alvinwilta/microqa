@@ -34,7 +34,8 @@ Determining the path of the config file:
 ```
 
 - [x] Finish ingraph
-- [ ] Test API and dot file for graph
+- [x] Test dot file for graph
+- [ ] Test API for graph
 - [x] Manage perl to execute callgraph, make a script to install perl
 
 # Error Codes

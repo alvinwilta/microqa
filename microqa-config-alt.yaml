@@ -1,7 +1,12 @@
 name: tns
-root_dir: ../tns/
+root_dir: ../../tns/
 service_connection_type: file # file/api
-service_connection_param: ../net_graph_tns.json # file=filename, api=url api
+service_connection_source: weavescope
+service_connection_filename: ../net_graph_tns.json # file=filename, api=url api
+rules:
+  - ACS
+  - ALCOM
+  - TCM
 services:
   app:
     dir: app/
