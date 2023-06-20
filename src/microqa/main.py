@@ -8,7 +8,7 @@ import argparse
 
 from microqa.param import java_param, go_param, js_param, php_param, py_param
 from microqa.service_graph import dot_graph, weavescope_graph
-from microqa.rules import ACS, ALCOM, TCM, interface
+from microqa.rules import ACS, ALCOM, TCM, TRS, interface
 
 default_config_filepath = "./microqa-config.yaml"
 graph_output_dir = "./graph"
@@ -24,7 +24,8 @@ lang_function_parser = {
 rule_functions = {
     'ACS': ACS.ACS,
     'ALCOM': ALCOM.ALCOM,
-    'TCM': TCM.TCM
+    'TCM': TCM.TCM,
+    'TRS': TRS.TRS
 }
 
 
