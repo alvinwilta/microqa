@@ -1,0 +1,13 @@
+FROM python:3.10
+
+WORKDIR /app
+
+COPY . .
+
+# Install perl dependencies for GraphViz
+RUN apt-get update && apt-get install -y graphviz libgraphviz-dev && cpan install GraphViz
+
+# Install python dependencies for the package
+RUN pip install -r requirements.txt
+
+ENTRYPOINT ["python", "-m", "microqa.main"]

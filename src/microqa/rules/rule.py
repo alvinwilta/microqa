@@ -45,6 +45,8 @@ class Rule:
     def print(self):
         self.setup_param()
         self.val = self.calculate()
+        if not isinstance(self.max_value, str) and self.max_value < self.val:
+                self.val = self.max_value
         self._print_value()
         self._print_progress()
 

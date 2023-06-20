@@ -4,12 +4,13 @@ import yaml
 import subprocess
 import pygraphviz as pgv
 import shutil
+import argparse
 
 from microqa.param import java_param, go_param, js_param, php_param, py_param
 from microqa.service_graph import dot_graph, weavescope_graph
 from microqa.rules import ACS, ALCOM, TCM, interface
 
-config_filepath = "./microqa-config.yaml"
+default_config_filepath = "./microqa-config.yaml"
 graph_output_dir = "./graph"
 
 allowed_lang = ["js", "py", "go", "java", "php"]
@@ -45,7 +46,7 @@ class Microservice:
         # add more on service_graph/ directory
         if self.config['service_connection_type'] == 'file':
             if self.config['service_connection_source'] == 'dot':
-                return dot_graph.dot_extract_connection(self.config['service_connection_param'])
+                return dot_graph.dot_extract_connection(self.config['service_connection_filename'])
             elif self.config['service_connection_source'] == 'weavescope':
                 return weavescope_graph.weavescope_extract_connection(list(self.config["services"]), self.config['service_connection_type'], self.config['service_connection_filename'] or '', graph_output_dir)
             else:
@@ -104,9 +105,12 @@ class Microservice:
         for target in self.service_graph.nodes():
             in_count = 0
             for node in self.service_graph.nodes():
+                if node not in self.list_services and target not in self.list_services:
+                    continue
                 if self.service_graph.has_edge(node, target):
                     in_count += 1
-            list_in_service_count[target] = in_count
+            if target in self.list_services:
+                list_in_service_count[target] = in_count
         return list_in_service_count
 
     def out_node(self) -> dict:
@@ -114,14 +118,19 @@ class Microservice:
         for target in self.service_graph.nodes():
             out_count = 0
             for node in self.service_graph.nodes():
+                if node not in self.list_services and target not in self.list_services:
+                    continue
                 if self.service_graph.has_edge(target, node):
                     out_count += 1
-            list_out_service_count[target] = out_count
+            if target in self.list_services:
+                list_out_service_count[target] = out_count
         return list_out_service_count
 
     def indirect_call(self) -> dict:
         list_indirect_call = {}
         for node in self.service_graph.nodes():
+            if node not in self.list_services:
+                continue
             list_indirect_call[node] = self._count_indirect_node(
                 self.service_graph, node)
         return list_indirect_call
@@ -139,6 +148,25 @@ class Microservice:
                     visited.add(node)
                     queue.append(node)
         return indirect_count
+    
+    def printAttr(self):
+        print('Total Param')
+        print(self.total_param())
+        print('Total Unique Param')
+        print(self.total_unique_param())
+        print('Total Service Ops')
+        print(self.total_service_ops())
+        print('Total Edges')
+        print(self.total_edges())
+        print('Total Services Count')
+        print(self.total_services)
+        print('Total Out Node')
+        print(self.out_node())
+        print('Total In Node')
+        print(self.in_node())
+        print('Total Indirect call')
+        print(self.indirect_call())
+        print()
 
 
 def import_config(filepath):
@@ -221,9 +249,15 @@ def _parse_parameter_from_config(config):
 
 
 def main():
-    config = import_config(config_filepath)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c","--config", help="directory to configuration file", default=default_config_filepath)
+    parser.add_argument("-v","--verbose", help="prints additional log for debugging", action='store_true')
+    parsed_config = parser.parse_args()
+    config = import_config(parsed_config.config)
     ms = Microservice(config)
     print()
+    if parsed_config.verbose:
+        ms.printAttr()
     ruleinput = interface.RuleInterface(ms.total_services, ms.list_services, ms.total_param(), ms.total_unique_param(
     ), ms.total_service_ops(), ms.total_edges(), ms.in_node(), ms.out_node(), ms.indirect_call())
     # print the metrics
