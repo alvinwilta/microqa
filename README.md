@@ -33,11 +33,6 @@ Determining the path of the config file:
 --config <config filepath>
 ```
 
-- [x] Finish ingraph
-- [x] Test dot file for graph
-- [ ] Test API for graph
-- [x] Manage perl to execute callgraph, make a script to install perl
-
 # Error Codes
 
 Error codes are 2 digit errors. The first digit indicates the module where the error occurs and the second is the indication of the error. Below are the known errors:
