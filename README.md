@@ -19,7 +19,7 @@ cd src/
 make all
 ```
 
-there is a github action example on microqa.yml
+there is a GitHub Actions example on microqa.yml
 
 ## Documentations
 
@@ -35,7 +35,7 @@ Determining the path of the config file:
 
 # Error Codes
 
-Error codes are 2 digit errors. The first digit indicates the module where the error occurs and the second is the indication of the error. Below are the known errors:
+Error codes are 2-digit errors. The first digit indicates the module where the error occurs and the second is the indication of the error. Below are the known errors:
 
 | Error code | Module        | Reason                                                                                  |
 | ---------- | ------------- | --------------------------------------------------------------------------------------- |
@@ -73,7 +73,7 @@ or
 docker run -v "/home/alvinwilta/Documents/kuliah/Tugas Akhir/2_codes/robot-shop/:/app/robot-shop/" -v "./microqa-config.yaml:/app microqa-config.yaml" --network=host microqa
 ```
 
-## Running CallGraph independentlu
+## Running CallGraph independently
 
 ```
 ./callGraph <dir> -language <lang> -output <output file>
